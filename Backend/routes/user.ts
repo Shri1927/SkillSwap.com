@@ -24,17 +24,17 @@ router.post('/signup', (req : Request, res : Response) => {
   
     }
     User.findOne({ username }).then(callback);
-});
+}); 
 
-router.post('/login' , async(req : Request , res : Response) =>{
-    const { username , password } = req.headers;
-    const user = await User.findOne({username, password});
-    if(user){
-        const token = Jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '1h'});
-        res.status(200).json({msg : "User Logged in Successfully" , token});
-    }else{
-        res.status(403).json({msg : "User Does not exist"});
-    }
+router.post('/login' , async(req, res) =>{
+     const { username, password } = req.body;
+     const user = await User.findOne({ username, password});
+     if(!user){
+         res.status(401).json({ message: 'Invalid username or password' });
+     }else{
+         const token = Jwt.sign({ username, role: 'user' }, SECRET, { expiresIn: '1h'});
+         res.json({ message: 'User logged in successfully', token });
+     }
 });
 
 export default router;

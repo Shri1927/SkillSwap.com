@@ -14,19 +14,14 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    async function handlelogin(){
-        const res = await axios.post("http://localhost:3000/user/login",{
-            username : username,
-            password : password
-        },{
-            headers:{
-                "Content-Type": "application/json"
-            }
-        })
-
-        let data = res.data;
-        localStorage.setItem('token', data.token);
-        navigate('/')
+    async function handlelogin() {
+            const res = await axios.post("http://localhost:8082/user/login",{
+                username: username,
+                password: password
+            });
+            let data = res.data;
+            localStorage.setItem('token', data.token);
+            navigate('/addskills');
     }
     return (
         <div className="flex mt-20 justify-center items-center ">
@@ -42,28 +37,30 @@ const Login = () => {
                     <CardTitle className="text-3xl font-mono font-bold mt-8">Login</CardTitle>
                 </CardHeader>
                 <CardContent className="w-full">
+                    <label htmlFor="username" className="font-bold">Username</label>
                     <Input style={{
                         height:"50px",
-                        marginBottom:"10px"
+                        marginBottom:"10px",
+                        marginTop:"5px"
                     }}
-                     placeholder="email" type="email" 
+                     id="username"
+                     placeholder="username" type="text" 
                      onChange={ (e) =>{
                         setUsername(e.target.value);
                      }}/>
+                     <label htmlFor="username" className="font-bold">Password</label>
                     <Input style={{
-                        height:"50px"
+                        height:"50px",
+                        marginTop:"5px"
                     }}
+                    id="password"
                     placeholder="password" type="password"
                     onChange={(e) => {
                         setPassword(e.target.value);
                     }} />
                 </CardContent>
                 <CardFooter>
-                    <Button style={{
-                        height:"50px",
-                        width:"80px",
-                        fontFamily:"monospace"
-                    }}
+                    <Button
                     onClick={handlelogin}>Login</Button>
                 </CardFooter>
             </Card>
